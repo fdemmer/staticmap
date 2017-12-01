@@ -230,7 +230,7 @@ class StaticMap:
     @property
     def url_template(self):
         """
-        return _url_template as is or choose one from the list
+        return _url_template as is if string or choose one from a list
         """
         if isinstance(self._url_template, basestring):
             return self._url_template
