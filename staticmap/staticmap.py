@@ -184,6 +184,8 @@ def _simplify(points, tolerance=11):
 
 
 class StaticMap:
+    thread_count = 4
+
     def __init__(self, width, height, padding_x=0, padding_y=0, url_template="http://a.tile.komoot.de/komoot-2/{z}/{x}/{y}.png", tile_size=256, tile_request_timeout=None, headers=None, reverse_y=False, background_color="#fff"):
         """
         :param width: map width in pixel
@@ -406,7 +408,7 @@ class StaticMap:
                 url = self.url_template.format(z=self.zoom, x=tile_x, y=tile_y)
                 tiles.append((x, y, url))
 
-        thread_pool = ThreadPoolExecutor(4)
+        thread_pool = ThreadPoolExecutor(self.thread_count)
 
         for nb_retry in itertools.count():
             if not tiles:
