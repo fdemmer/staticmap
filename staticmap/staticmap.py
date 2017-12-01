@@ -1,10 +1,16 @@
 import itertools
+import random
 from io import BytesIO
 from math import sqrt, log, tan, pi, cos, ceil, floor, atan, sinh
 
 import requests
 from PIL import Image, ImageDraw
 from concurrent.futures import ThreadPoolExecutor
+
+try:
+    basestring
+except NameError:
+    basestring = str
 
 
 class Line:
@@ -204,7 +210,7 @@ class StaticMap:
         self.width = width
         self.height = height
         self.padding = (padding_x, padding_y)
-        self.url_template = url_template
+        self._url_template = url_template
         self.headers = headers
         self.tile_size = tile_size
         self.request_timeout = tile_request_timeout
@@ -220,6 +226,16 @@ class StaticMap:
         self.x_center = 0
         self.y_center = 0
         self.zoom = 0
+
+    @property
+    def url_template(self):
+        """
+        return _url_template as is or choose one from the list
+        """
+        if isinstance(self._url_template, basestring):
+            return self._url_template
+        else:
+            return random.choice(self._url_template)
 
     def add_line(self, line):
         """
